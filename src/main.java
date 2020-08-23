@@ -7,25 +7,27 @@ import java.util.BitSet;
 public class main {
     public static void main(String[] args) {
 
-        String fileToCompress = "C:\\Users\\eyald\\Desktop\\genesis.txt";
-        String GzipCompressFile = "C:\\Users\\eyald\\Desktop\\GzipCompressFile";
-        String keyPath = "C:\\Users\\eyald\\Desktop\\myKey";
+        //Adjust base path and which file to compress
+        final String basePath = "C:\\Users\\eyald\\Desktop\\";
+        final String fileToCompress = basePath + "smiley.bmp";
+        final int searchBufferSize = 64;
+        final int windowSize = 2048;
+
+        //do not adjust
+        final String GzipCompressFile = basePath+"GzipCompressFile";
+        final String keyPath = basePath+"myKey";
+        final String finalOutput = basePath+"originalFile.txt";
 
 
-        String finalOutput = "C:\\Users\\eyald\\Desktop\\originalFile.txt";
-
-
-        Lz77EncoderDecoder l = new Lz77EncoderDecoder(16, 2048);
+        Lz77EncoderDecoder l = new Lz77EncoderDecoder(searchBufferSize, windowSize);
         HuffmanEncoderDecoder huffman = new HuffmanEncoderDecoder();
 
 
-
-
         BitSet LZCompressedBitSet = l.CompressLz(fileToCompress, GzipCompressFile);
-       huffman.Compress(LZCompressedBitSet, GzipCompressFile);
+        huffman.Compress(LZCompressedBitSet, GzipCompressFile);
 
         ArrayList<Byte> decompressArray = huffman.decompress(GzipCompressFile, keyPath);
-       l.deCompress(decompressArray, finalOutput);
+        l.deCompress(decompressArray, finalOutput);
 
 
     }
